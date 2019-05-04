@@ -1,0 +1,47 @@
+﻿@model PagedList.Core.IPagedList<ImageServe.WebModels.ViewModels.ImageViewModel>
+
+@{
+    ViewData["Title"] = "News feed";
+}
+
+<div class="row">
+    @foreach (var image in Model)
+    {
+        <div class="card col-lg-3 col-md-3 col-xs-6 thumb">
+            <a style="text-align:center" asp-controller="Image" asp-action="Details" asp-route-id="@image.Id" class="fancybox">
+                <img src="https://netacademy.blob.core.windows.net/thumbs/@image.Name-thumb.jpg" class="zoom " alt="">
+            </a>
+            <div>
+                <div>
+                    <span><i class="fas fa-user"></i><a asp-controller="Profile" asp-action="Details" asp-route-id="@image.User.Id">@image.User.GetFullName()</a></span>
+                    <span style="float:right"><i class="fa fa-heart" aria-hidden="true"></i> @image.LikesCount</span>
+
+
+                </div>
+                <div>
+                    <small><i class="far fa-clock"></i> @image.DateUploaded.ToString("MMMM dd, yyyy 'at' HH:mm tt")</small>
+                    <span style="float:right">
+                        @if (@image.IsPublic)
+                        {
+                            <i class="fas fa-lock-open"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-lock"></i>
+                        }
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+<div class="pagination pagination-sm" style="padding-right:230px">
+    <pager class="page-link" list="@Model" asp-action="Index" asp-controller="Home" />
+</div>
+
+
+
+

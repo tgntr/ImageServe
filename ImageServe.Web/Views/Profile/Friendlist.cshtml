@@ -1,0 +1,44 @@
+﻿@model ImageServe.WebModels.ViewModels.UserFriendlistViewModel
+@{
+    ViewData["Title"] = "Friendlist";
+}
+<form method="post">
+    <div class="ui-widget">
+        <div class="form-group" style="margin-left:170px">
+            <input asp-for="AddFriend" type="text" id="privacy" placeholder="Search for user" />
+            <span asp-validation-for="AddFriend" class="text-danger"></span>
+            <button type="submit" class="btn btn-outline-success"><i class="fas fa-user-plus"></i> Add</button>
+        </div>
+    </div>
+</form>
+<br />
+
+@foreach (var friend in Model.UserFriends)
+{
+    <div class="card col-lg-3 col-md-3 col-xs-6">
+        <div class="row" style="padding:5px 0 5px 0;margin:5px 0 5px 0">
+            <div class="col-sm-2">
+                @if (friend.FriendAvatar != null)
+                {
+
+                    <img src="https://netacademy.blob.core.windows.net/thumbs/@friend.FriendAvatar-thumb.jpg" class="img-circle" width="35px" height="35px">
+                }
+                else
+                {
+                    <img src="~/images/blank-user.png" class="img-circle" width="60px" height="60px">
+                }
+            </div>
+            <div class="col-sm-4">
+                <a asp-controller="Profile" asp-action="Details" asp-route-id="@friend.FriendId" style="font-size: 25px">@friend.FriendFullName</a>
+            </div>
+            <div class="col-sm-3" style="float:right">
+                <a asp-controller="Profile" asp-action="RemoveFriend" asp-route-friendId="@friend.FriendId" class="btn btn-outline-success" style="float:right"><i class="fas fa-user-times"></i> Remove</a>
+            </div>
+        </div>
+    </div>
+    <br />
+
+}
+
+
+

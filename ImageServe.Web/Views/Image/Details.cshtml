@@ -1,0 +1,90 @@
+﻿@using ImageServe.WebModels.ViewModels
+@model ImageServe.WebModels.ViewModels.ImageViewModel
+@{
+    ViewData["Title"] = "ImageDetails";
+}
+
+
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fas fa-user"></i><a asp-controller="Profile" asp-action="Details" asp-route-id="@Model.User.Id">@Model.User.GetFullName()</a>
+        <div style="float:right;"><i class="far fa-clock"></i> @Model.DateUploaded.ToString("MMMM dd, yyyy 'at' HH:mm")</div>
+    </div>
+    <div class="pic-container">
+        <img src="@Model.GetImageUrl()" alt="Card image" id="img-details">
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">@Model.Description</li>
+    </ul>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            @foreach (var tag in Model.Tags)
+            {
+                <span class="badge badge-secondary"><b>#@tag.Name</b></span>
+            }
+        </li>
+    </ul>
+    <div class="card-header">
+        <a id="like-btn" class="btn btn-outline-success @(Model.IsLiked ? "checked" : "unchecked")" user="@Model.CurrentUser" image="@Model.Id"><i class="fa fa-heart" aria-hidden="true"></i> <span id="likes">@Model.LikesCount</span></a>
+        @if (@User.Claims.ToArray()[0].Value.ToString() == Model.User.Id)
+        {
+            <div style="float:right">
+                <a asp-controller="Profile" asp-action="SetAvatar" asp-route-name="@Model.Name" class="btn btn-outline-success">Set as avatar</a>
+                <a asp-controller="Image" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-success"><i class="fas fa-edit"></i> Edit</a>
+                <a asp-controller="Image" asp-action="Remove" asp-route-id="@Model.Id" class="btn btn-outline-success"><i class="fas fa-trash-alt"></i> Delete</a>
+            </div>
+        }
+
+
+    </div>
+
+
+</div>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Comments</h4>
+        <h6 class="comment-label">Write a comment:</h6>
+
+        <div>
+            @{
+                await Html.RenderPartialAsync("MainComment", new CommentViewModel { ImageId = Model.Id, MainCommentId = 0 });
+            }
+
+            @foreach (var c in Model.MainComments.OrderByDescending(t => t.Created))
+            {
+                <div class="main-comment-box">
+                    <div class="test">
+                        <h5 class="card-subtitle mb-2 text-muted" id="comment-main">@c.Message</h5>
+                        <h6>- by @c.UserName</h6>
+                        <h6>@c.Created</h6>
+                    </div>
+                    <div class="main-comment">
+                        <p>Reply</p>
+                        <div class="main-comment" id="comment">
+                            @{
+                                await Html.RenderPartialAsync("MainComment", new CommentViewModel { ImageId = Model.Id, MainCommentId = c.Id });
+                            }
+                        </div>
+                        <div class="reply">
+
+                            @foreach (var sc in c.SubComments.OrderByDescending(t => t.Created))
+                            {
+
+                                <h5 class="card-subtitle">@sc.Message</h5>
+                                <h6>- by @sc.UserName</h6>
+                                <h6>@sc.Created</h6>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,78 @@
+﻿@using PagedList.Core;
+@model ImageServe.WebModels.ViewModels.UserViewModel
+@{
+    ViewData["Title"] = Model.GetFullName();
+}
+<div class="card" style="padding:10px; padding-right: 10px; margin-left:0px" >
+    <div class="row">
+        <div class="col-sm-3">
+            @if (Model.Avatar == null)
+            {
+                <img src="~/images/blank-user.png" alt="Alternate Text" class="img-thumbnail" width="180" height="180" />
+            }
+            else
+            {
+                <img src="https://netacademy.blob.core.windows.net/thumbs/@Model.Avatar-thumb.jpg" alt="Alternate Text" class="img-thumbnail" width="180" height="180" />
+            }
+        </div>
+        <div class="col-sm-5">
+            <h3 style="margin-left:28px">@Model.GetFullName()</h3>
+            <div style="margin-left:20px">
+                @if (Model.Details == null)
+                {
+                    <p>No description.</p>
+
+                }
+                else
+                {
+                    <p>@Model.Details</p>
+                }
+            </div>
+            @if (User.Claims.ToArray()[0].Value.ToString() == Model.Id)
+            {
+                <div>
+                    <a asp-area="" asp-controller="Profile" asp-action="Edit" class="btn btn-outline-success" id="edit-profile-btn"><i class="fas fa-edit"></i> Edit</a>
+                    <a asp-area="" asp-controller="Profile" asp-action="Friendlist" class="btn btn-outline-success" id="user-friend-list-btn"><i class="fas fa-user-friends"></i> Friendlist</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    @foreach (var image in Model.Images)
+    {
+        <div class="card col-lg-3 col-md-3 col-xs-6 thumb">
+            <a style="text-align:center" asp-controller="Image" asp-action="Details" asp-route-id="@image.Id" class="fancybox">
+                <img src="https://netacademy.blob.core.windows.net/thumbs/@image.Name-thumb.jpg" class="zoom " alt="">
+            </a>
+            <div>
+                <div>
+                    <span><i class="fas fa-user"></i><a asp-controller="Profile" asp-action="Details" asp-route-id="@Model.Id">@Model.GetFullName()</a></span>
+                    <span style="float:right"><i class="fa fa-heart" aria-hidden="true"></i> @image.LikesCount</span>
+
+
+                </div>
+                <div>
+                    <small><i class="far fa-clock"></i> @image.DateUploaded.ToString("MMMM dd, yyyy 'at' HH:mm tt")</small>
+                    <span style="float:right">
+                        @if (@image.IsPublic)
+                        {
+                            <i class="fas fa-lock-open"></i>
+                        }
+                        else
+                        {
+                            <i class="fas fa-lock"></i>
+                        }
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+    <div class="pagination pagination-sm" style="padding-right:230px">
+        <pager class="page-link" list="(IPagedList<ImageServe.WebModels.Dtos.ImageDto>)@Model.Images" asp-action="Details" asp-controller="Profile" />
+    </div>
+
+
+

@@ -1,0 +1,88 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ImageServe</title>
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-darkly.css" />
+
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    </environment>
+    <environment names="Staging,Production">
+
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap-darkly.css" />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar-custom">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand" id="navbar-brand-custom">ImageServe</a>
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a asp-area="" asp-controller="Image" asp-action="Upload" class="btn btn-outline-primary">
+                        <i class="fas fa-upload" aria-hidden="true"></i>  Upload
+                    </a>
+
+                </li>
+                <li class="nav-item active">
+                </li>
+            </ul>
+            <form asp-controller="Search" asp-action="Index" method="get" class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" name="SearchString" placeholder="Search" required>
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Search</button>
+            </form>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a asp-area="" asp-controller="Profile" asp-action="Details" asp-route-id="@User.Claims.ToArray()[0].Value.ToString()"class="btn btn-outline-primary"><i class="fas fa-user"></i> My Profile</a>
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Session" asp-action="SignOut" class="btn btn-outline-primary"><i class="fas fa-power-off"></i> Logout</a>
+            </li>
+
+        </ul>
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+
+
+        </div>
+
+    </nav>
+
+    <div class="container body-content" >
+        @RenderBody()
+        <hr />
+
+    </div>
+    <footer>
+        <p class="footer">&copy; 2019 - ImageServe</p>
+    </footer>
+    <environment names="Development">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js" asp-append-version="true"></script>
+    </environment>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
